@@ -44,6 +44,32 @@ func TestAuthLoginCmd_FlagParsing(t *testing.T) {
 	}
 }
 
+func TestAuthLoginCmd_HelpGuidesNonStreamingAgentsToSplitFlow(t *testing.T) {
+	f, stdout, _, _ := cmdutil.TestFactory(t, &core.CliConfig{
+		AppID: "test-app", AppSecret: "test-secret", Brand: core.BrandFeishu,
+	})
+
+	cmd := NewCmdAuthLogin(f, func(opts *LoginOptions) error { return nil })
+	cmd.SetOut(stdout)
+	cmd.SetErr(io.Discard)
+	cmd.SetArgs([]string{"--help"})
+	if err := cmd.Execute(); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	got := stdout.String()
+	for _, want := range []string{
+		"only delivers final turn messages",
+		"--no-wait --json",
+		"send the verification URL to the user as your final message",
+		"run --device-code in a later step",
+	} {
+		if !strings.Contains(got, want) {
+			t.Fatalf("help missing %q, got:\n%s", want, got)
+		}
+	}
+}
+
 func TestAuthCheckCmd_FlagParsing(t *testing.T) {
 	f, _, _, _ := cmdutil.TestFactory(t, &core.CliConfig{
 		AppID: "test-app", AppSecret: "test-secret", Brand: core.BrandFeishu,

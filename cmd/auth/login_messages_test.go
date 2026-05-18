@@ -97,16 +97,17 @@ func TestLoginMsg_FormatStrings(t *testing.T) {
 }
 
 // TestAgentTimeoutHint_CarriesKeyInfo guards the contract that the synchronous
-// auth-login output tells AI agents two things: (a) this command blocks for
-// minutes — set a long runner timeout, and (b) the alternative is the
-// --no-wait + --device-code split-flow. Without (a) AI sets a 10s timeout and
-// kills the process before the user can authorize; without (b) the AI has no
-// recovery path and just retries with the same short timeout, invalidating
-// each new device code in turn.
+// auth-login output tells AI agents three things: (a) this command blocks for
+// minutes — set a long runner timeout, (b) the alternative is the --no-wait +
+// --device-code split-flow, and (c) non-streaming harnesses must end the turn
+// after presenting the URL instead of blocking in the same turn.
 func TestAgentTimeoutHint_CarriesKeyInfo(t *testing.T) {
 	for _, lang := range []string{"zh", "en"} {
 		hint := getLoginMsg(lang).AgentTimeoutHint
-		for _, want := range []string{"--no-wait", "--device-code"} {
+		for _, want := range []string{"--no-wait", "--device-code", "turn"} {
+			if lang == "zh" && want == "turn" {
+				want = "本轮"
+			}
 			if !strings.Contains(hint, want) {
 				t.Errorf("%s AgentTimeoutHint missing %q: %s", lang, want, hint)
 			}

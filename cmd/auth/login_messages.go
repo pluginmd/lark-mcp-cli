@@ -59,7 +59,7 @@ var loginMsgZh = &loginMsg{
 
 	OpenURL:            "在浏览器中打开以下链接进行认证:\n\n",
 	WaitingAuth:        "等待用户授权...",
-	AgentTimeoutHint:   "[AI agent] 此命令最长阻塞约 10 分钟，等待用户在浏览器内完成授权。请确保 runner 的 timeout >= 600s；如不支持长 timeout，请改用 `lark-cli auth login --no-wait --json` 拿到 device_code 后再用 `lark-cli auth login --device-code <code>` 续上轮询。**不要短 timeout 反复重试**，每次重启会作废上一轮的 device code，导致用户授权链接失效。向用户展示授权链接时，必须逐字原样转发 CLI 返回的 URL，把它视为不可修改的 opaque string；不要做 URL 编码或解码，不要补 `%20`、空格或标点，不要改写成 Markdown 链接，建议用只包含该 URL 的代码块单独输出。",
+	AgentTimeoutHint:   "[AI agent] 此命令最长阻塞约 10 分钟，等待用户在浏览器内完成授权。请确保 runner 的 timeout >= 600s。若你的 harness 只会把最终回复发给用户，请改用 `lark-cli auth login --no-wait --json` 拿到 device_code 和 verification_url，把 verification_url 作为本轮最终消息原样发给用户并结束本轮；等用户回复已完成授权后，再在后续步骤运行 `lark-cli auth login --device-code <code>` 续上轮询。**不要在同一轮里展示 URL 后立刻阻塞执行 --device-code**，也不要短 timeout 反复重试；每次重启会作废上一轮的 device code，导致用户授权链接失效。向用户展示授权链接时，必须逐字原样转发 CLI 返回的 URL，把它视为不可修改的 opaque string；不要做 URL 编码或解码，不要补 `%20`、空格或标点，不要改写成 Markdown 链接，建议用只包含该 URL 的代码块单独输出。",
 	AuthSuccess:        "已收到授权确认，正在获取用户信息并校验授权结果...",
 	LoginSuccess:       "授权成功! 用户: %s (%s)",
 	AuthorizedUser:     "当前授权账号: %s (%s)",
@@ -95,7 +95,7 @@ var loginMsgEn = &loginMsg{
 
 	OpenURL:            "Open this URL in your browser to authenticate:\n\n",
 	WaitingAuth:        "Waiting for user authorization...",
-	AgentTimeoutHint:   "[AI agent] This command blocks for up to ~10 minutes while waiting for the user to authorize in their browser. Make sure your runner's timeout is >= 600s. If long timeouts are not supported, use `lark-cli auth login --no-wait --json` to get a device_code, then `lark-cli auth login --device-code <code>` to resume polling. **Do NOT retry with a short timeout**; each restart invalidates the previous device code and makes the earlier authorization URL useless. When showing the authorization URL to the user, copy the CLI-returned URL exactly as-is and treat it as an opaque string. Do not URL-encode or decode it, do not add `%20`, spaces, or punctuation, do not rewrite it as Markdown link text, and prefer a fenced code block containing only the raw URL.",
+	AgentTimeoutHint:   "[AI agent] This command blocks for up to ~10 minutes while waiting for the user to authorize in their browser. Make sure your runner's timeout is >= 600s. If your harness only delivers final turn messages, use `lark-cli auth login --no-wait --json` to get device_code and verification_url, present verification_url to the user exactly as the final message of this turn, then end the turn; after the user replies that they authorized, run `lark-cli auth login --device-code <code>` in a later step to resume polling. **Do NOT show the URL and then immediately block on --device-code in the same turn**, and do not retry with a short timeout; each restart invalidates the previous device code and makes the earlier authorization URL useless. When showing the authorization URL to the user, copy the CLI-returned URL exactly as-is and treat it as an opaque string. Do not URL-encode or decode it, do not add `%20`, spaces, or punctuation, do not rewrite it as Markdown link text, and prefer a fenced code block containing only the raw URL.",
 	AuthSuccess:        "Authorization confirmed, fetching user info and validating granted scopes...",
 	LoginSuccess:       "Authorization successful! User: %s (%s)",
 	AuthorizedUser:     "Authorized account: %s (%s)",

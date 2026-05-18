@@ -47,7 +47,9 @@ func NewCmdAuthLogin(f *cmdutil.Factory, runF func(*LoginOptions) error) *cobra.
 		Long: `Device Flow authorization login.
 
 For AI agents: this command blocks until the user completes authorization in the
-browser. Run it in the background and retrieve the verification URL from its output.`,
+browser. If your harness only delivers final turn messages, use --no-wait --json,
+send the verification URL to the user as your final message, end the turn, then
+run --device-code in a later step after the user confirms authorization.`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if mode := f.ResolveStrictMode(cmd.Context()); mode == core.StrictModeBot {
 				return output.ErrWithHint(output.ExitValidation, "strict_mode",
@@ -187,7 +189,7 @@ func authLoginRun(opts *LoginOptions) error {
 			log("View all options:")
 			log(msg.HintFooter)
 			log("")
-			log("Note: this command blocks until authorization is complete. Run it in the background and retrieve the verification URL from its output.")
+			log("Note: this command blocks until authorization is complete. For non-streaming agent harnesses, use --no-wait --json, send the verification URL as the final message of the turn, then run --device-code in a later step after the user confirms authorization.")
 			return output.ErrValidation("please specify the scopes to authorize")
 		}
 	}
@@ -266,7 +268,7 @@ func authLoginRun(opts *LoginOptions) error {
 			"verification_url": authResp.VerificationUriComplete,
 			"device_code":      authResp.DeviceCode,
 			"expires_in":       authResp.ExpiresIn,
-			"hint":             fmt.Sprintf("Show verification_url to the user exactly as returned by the CLI and treat it as an opaque string. Do not URL-encode or decode it, do not normalize or rewrite it, do not add %%20, spaces, or punctuation, and do not wrap it as Markdown link text; prefer a fenced code block containing only the raw URL. Then immediately execute: lark-cli auth login --device-code %s (blocks until authorized or timeout). Do not instruct the user to run this command themselves.", authResp.DeviceCode),
+			"hint":             fmt.Sprintf("Show verification_url to the user exactly as returned by the CLI and treat it as an opaque string. Do not URL-encode or decode it, do not normalize or rewrite it, do not add %%20, spaces, or punctuation, and do not wrap it as Markdown link text; prefer a fenced code block containing only the raw URL. For agent harnesses that only deliver final turn messages, make the URL the final message of the turn and return control to the user; do not block on --device-code in the same turn. After the user confirms authorization in a later step, run: lark-cli auth login --device-code %s", authResp.DeviceCode),
 		}
 		encoder := json.NewEncoder(f.IOStreams.Out)
 		encoder.SetEscapeHTML(false)

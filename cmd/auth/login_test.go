@@ -315,10 +315,12 @@ func TestAuthLoginRun_NonTerminal_NoFlags_RejectsWithHint(t *testing.T) {
 	if !strings.Contains(msg, "scopes") {
 		t.Errorf("expected error to mention scopes, got: %s", msg)
 	}
-	// Stderr should contain background hint
+	// Stderr should explain the split-flow path for non-streaming agents.
 	stderrStr := stderr.String()
-	if !strings.Contains(stderrStr, "background") {
-		t.Errorf("expected stderr to mention background, got: %s", stderrStr)
+	for _, want := range []string{"--no-wait --json", "final message of the turn", "--device-code"} {
+		if !strings.Contains(stderrStr, want) {
+			t.Errorf("expected stderr to mention %q, got: %s", want, stderrStr)
+		}
 	}
 }
 
@@ -949,9 +951,22 @@ func TestAuthLoginRun_NoWaitJSONHintIncludesRawURLGuidance(t *testing.T) {
 		"do not add %20, spaces, or punctuation",
 		"do not wrap it as Markdown link text",
 		"fenced code block containing only the raw URL",
+		"final message of the turn",
+		"return control to the user",
+		"do not block on --device-code in the same turn",
+		"After the user confirms authorization in a later step",
+		"lark-cli auth login --device-code device-code",
 	} {
 		if !strings.Contains(hint, want) {
 			t.Fatalf("hint missing %q, got:\n%s", want, hint)
+		}
+	}
+	for _, unwanted := range []string{
+		"Then immediately execute",
+		"Do not instruct the user to run this command themselves",
+	} {
+		if strings.Contains(hint, unwanted) {
+			t.Fatalf("hint should not contain %q, got:\n%s", unwanted, hint)
 		}
 	}
 }
@@ -1035,6 +1050,10 @@ func TestAuthLoginRun_JSONDeviceAuthorizationAgentHintIncludesRawURLGuidance(t *
 	hint, _ := data["agent_hint"].(string)
 	for _, want := range []string{
 		"timeout >= 600s",
+		"本轮最终消息",
+		"结束本轮",
+		"用户回复已完成授权",
+		"不要在同一轮里展示 URL 后立刻阻塞执行 --device-code",
 		"逐字原样转发 CLI 返回的 URL",
 		"opaque string",
 		"不要做 URL 编码或解码",
