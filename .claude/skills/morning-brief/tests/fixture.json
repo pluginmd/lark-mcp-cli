@@ -1,0 +1,10 @@
+{
+  "_comment": "morning-brief: orchestrator. Spawns sub-skills in parallel; no direct lark-cli calls.",
+  "skill": "morning-brief",
+  "calls": [],
+  "expected_output": [
+    "📅 HÔM NAY",
+    "🎯 TOP 5 TASK",
+    "📧 MAIL ƯU TIÊN"
+  ]
+}

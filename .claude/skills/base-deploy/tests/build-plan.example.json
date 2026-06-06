@@ -1,0 +1,118 @@
+{
+  "meta": {
+    "base_title": "Vận hành dự án — Team 30",
+    "team_size": 30,
+    "owner_open_id": "ou_REPLACE_ME",
+    "goal": "Theo dõi tiến độ 200 dự án / 1500 task cho team 30 người, KPI realtime",
+    "kpis": ["số task quá hạn", "tiến độ mỗi dự án %", "tải task mỗi người"]
+  },
+  "base_token": null,
+  "tables": [
+    {
+      "key": "members",
+      "name": "Thành viên",
+      "table_id": null,
+      "primary_field": "Họ tên",
+      "fields": [
+        { "name": "Họ tên", "type": "text", "primary": true },
+        { "name": "Tài khoản", "type": "user" },
+        { "name": "Phòng ban", "type": "single_select",
+          "options": ["Kỹ thuật", "Kinh doanh", "Vận hành", "Khác"] },
+        { "name": "Vai trò", "type": "single_select",
+          "options": ["Member", "PM", "Manager"] }
+      ],
+      "views": [
+        { "name": "Theo phòng ban", "type": "grid", "filter": null }
+      ]
+    },
+    {
+      "key": "projects",
+      "name": "Dự án",
+      "table_id": null,
+      "primary_field": "Tên dự án",
+      "fields": [
+        { "name": "Tên dự án", "type": "text", "primary": true },
+        { "name": "Trạng thái", "type": "single_select",
+          "options": ["Mới", "Đang chạy", "Tạm dừng", "Hoàn thành"] },
+        { "name": "PM", "type": "user" },
+        { "name": "Bắt đầu", "type": "date" },
+        { "name": "Hạn", "type": "date" },
+        { "name": "Tasks", "type": "link", "link_table": "tasks" },
+        { "name": "Số task", "type": "rollup",
+          "via": "Tasks", "rollup": "count" },
+        { "name": "Tiến độ %", "type": "formula",
+          "expr": "task hoàn thành / tổng task" }
+      ],
+      "views": [
+        { "name": "Kanban trạng thái", "type": "kanban", "group_by": "Trạng thái" },
+        { "name": "Sắp tới hạn", "type": "grid",
+          "filter": "Hạn <= today+7 AND Trạng thái != Hoàn thành" }
+      ]
+    },
+    {
+      "key": "tasks",
+      "name": "Task",
+      "table_id": null,
+      "primary_field": "Tên task",
+      "fields": [
+        { "name": "Tên task", "type": "text", "primary": true },
+        { "name": "Dự án", "type": "link", "link_table": "projects" },
+        { "name": "Người làm", "type": "user" },
+        { "name": "Trạng thái", "type": "single_select",
+          "options": ["Todo", "Đang làm", "Review", "Hoàn thành"] },
+        { "name": "Ưu tiên", "type": "single_select",
+          "options": ["Thấp", "Trung bình", "Cao", "Khẩn"] },
+        { "name": "Hạn", "type": "date" },
+        { "name": "Số ngày trễ", "type": "formula",
+          "expr": "if(!Hoàn thành && Hạn < today, today - Hạn, 0)" }
+      ],
+      "views": [
+        { "name": "Của tôi", "type": "grid", "filter": "Người làm = current_user" },
+        { "name": "Quá hạn", "type": "grid",
+          "filter": "Hạn < today AND Trạng thái != Hoàn thành" }
+      ]
+    }
+  ],
+  "relations": [
+    { "from": "tasks.Dự án", "to": "projects", "type": "many_to_one" },
+    { "from": "tasks.Người làm", "to": "members", "type": "many_to_one_user" }
+  ],
+  "imports": [
+    { "source": "members.xlsx", "into": "members",
+      "mapping": { "Tên": "Họ tên", "Email": "Tài khoản", "Bộ phận": "Phòng ban", "Chức danh": "Vai trò" },
+      "dedupe_key": "Họ tên" },
+    { "source": "projects.xlsx", "into": "projects",
+      "mapping": { "Dự án": "Tên dự án", "Status": "Trạng thái", "Quản lý": "PM", "Start": "Bắt đầu", "Deadline": "Hạn" },
+      "dedupe_key": "Tên dự án" },
+    { "source": "tasks.xlsx", "into": "tasks",
+      "mapping": { "Task": "Tên task", "Thuộc dự án": "Dự án", "Assignee": "Người làm", "Status": "Trạng thái", "Priority": "Ưu tiên", "Due": "Hạn" },
+      "dedupe_key": "Tên task" }
+  ],
+  "dashboard": {
+    "name": "KPI Vận hành",
+    "dashboard_id": null,
+    "blocks": [
+      { "type": "kpi", "title": "Task quá hạn", "source": "tasks",
+        "metric": "count", "filter": "Hạn < today AND Trạng thái != Hoàn thành" },
+      { "type": "kpi", "title": "Dự án đang chạy", "source": "projects",
+        "metric": "count", "filter": "Trạng thái = Đang chạy" },
+      { "type": "chart", "title": "Task theo dự án", "chart": "bar",
+        "source": "tasks", "group_by": "Dự án", "metric": "count" },
+      { "type": "chart", "title": "Tải task mỗi người", "chart": "bar",
+        "source": "tasks", "group_by": "Người làm", "metric": "count",
+        "filter": "Trạng thái != Hoàn thành" },
+      { "type": "filter", "title": "Lọc theo PM", "source": "tasks", "field": "Người làm" }
+    ]
+  },
+  "automation": [
+    { "key": "notify-overdue", "trigger": "task quá hạn (Hạn < today, chưa Hoàn thành)",
+      "action": "bot nhắc Người làm + PM qua IM", "workflow_id": null },
+    { "key": "notify-assign", "trigger": "task mới gán Người làm",
+      "action": "thông báo người được gán", "workflow_id": null }
+  ],
+  "roles": [
+    { "name": "Member", "scope": "sửa task mình là Người làm; xem dự án" },
+    { "name": "PM", "scope": "sửa dự án mình là PM + task trong đó" },
+    { "name": "Manager", "scope": "sửa toàn bộ + xem dashboard" }
+  ]
+}

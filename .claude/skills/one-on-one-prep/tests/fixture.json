@@ -1,0 +1,44 @@
+{
+  "_comment": "one-on-one-prep: pre-1:1 brief. OKR + tasks + docs + prior 1:1 notes.",
+  "skill": "one-on-one-prep",
+  "calls": [
+    {
+      "service": "contact",
+      "verb": "search-user",
+      "flags": [
+        "--query"
+      ]
+    },
+    {
+      "service": "okr",
+      "verb": "cycle-list",
+      "flags": [
+        "--user-id",
+        "--time-range"
+      ]
+    },
+    {
+      "service": "task",
+      "verb": "search",
+      "flags": [
+        "--assignee",
+        "--completed",
+        "--due"
+      ]
+    },
+    {
+      "service": "docs",
+      "verb": "search",
+      "flags": [
+        "--query"
+      ]
+    }
+  ],
+  "expected_output": [
+    "1:1 prep",
+    "OKR",
+    "ROLE",
+    "From last 1:1",
+    "Questions to bring"
+  ]
+}

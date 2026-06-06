@@ -1,0 +1,42 @@
+{
+  "_comment": "approval-flow-sla: process-owner analytics. Enumerate instances (initiated), pull each timeline (instances.get → task_list start/end → dwell), rank bottleneck, score SLA, audit approved items. remind/transfer only on confirm.",
+  "skill": "approval-flow-sla",
+  "calls": [
+    {
+      "service": "approval",
+      "verb": "instances initiated",
+      "flags": [
+        "--user-id",
+        "--start",
+        "--end"
+      ]
+    },
+    {
+      "service": "approval",
+      "verb": "instances get",
+      "flags": [
+        "--instance-code",
+        "--jq"
+      ]
+    },
+    {
+      "service": "approval",
+      "verb": "tasks query",
+      "flags": []
+    },
+    {
+      "service": "approval",
+      "verb": "tasks remind",
+      "flags": [
+        "--instance-code"
+      ]
+    }
+  ],
+  "expected_output": [
+    "SCORECARD",
+    "NGHẼN",
+    "SLA",
+    "AUDIT",
+    "p90"
+  ]
+}

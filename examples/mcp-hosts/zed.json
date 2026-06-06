@@ -1,0 +1,15 @@
+{
+  "_comment": "Merge into ~/.config/zed/settings.json. Zed uses context_servers (not mcpServers).",
+  "context_servers": {
+    "lark-cli": {
+      "command": {
+        "path": "<BINARY-PATH>",
+        "args": ["mcp", "serve"],
+        "env": {
+          "NO_COLOR": "1"
+        }
+      },
+      "settings": {}
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "_comment": "calendar-optimizer: 30-day meeting audit. Reads calendar agenda + vc notes for meeting content analysis.",
+  "skill": "calendar-optimizer",
+  "calls": [
+    {"service": "calendar", "verb": "agenda", "flags": ["--start", "--end"]},
+    {"service": "vc", "verb": "notes", "flags": ["--meeting-ids"]}
+  ],
+  "expected_output": [
+    "DECLINE",
+    "SHORTEN",
+    "CONVERT",
+    "KEEP"
+  ]
+}

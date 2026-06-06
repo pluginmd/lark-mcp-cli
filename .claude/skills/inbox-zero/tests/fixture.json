@@ -1,0 +1,16 @@
+{
+  "_comment": "Fixture for inbox-zero. mail +triage is the list/search verb; folder discovery via atomic lark-mail.",
+  "skill": "inbox-zero",
+  "calls": [
+    {"service": "mail", "verb": "triage", "flags": ["--max", "--filter"]},
+    {"service": "lark-contact", "verb": "get-user", "flags": []}
+  ],
+  "expected_output": [
+    "inbox-zero",
+    "started",
+    "archived",
+    "replied",
+    "tasked",
+    "remaining"
+  ]
+}

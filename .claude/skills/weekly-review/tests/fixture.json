@@ -1,0 +1,50 @@
+{
+  "_comment": "Fixture for weekly-review skill. Cross-domain calendar + task + OKR.",
+  "skill": "weekly-review",
+  "calls": [
+    {
+      "service": "calendar",
+      "verb": "agenda",
+      "flags": [
+        "--start",
+        "--end"
+      ]
+    },
+    {
+      "service": "task",
+      "verb": "search",
+      "flags": [
+        "--completed",
+        "--due"
+      ]
+    },
+    {
+      "service": "task",
+      "verb": "get-my-tasks",
+      "flags": [
+        "--complete"
+      ]
+    },
+    {
+      "service": "okr",
+      "verb": "cycle-list",
+      "flags": [
+        "--user-id",
+        "--time-range"
+      ]
+    },
+    {
+      "service": "okr",
+      "verb": "progress-list",
+      "flags": []
+    }
+  ],
+  "expected_output": [
+    "WEEKLY REVIEW",
+    "THEMES",
+    "ALLOCATION",
+    "EXECUTION",
+    "OKR",
+    "REFLECTION"
+  ]
+}

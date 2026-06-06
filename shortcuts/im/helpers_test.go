@@ -602,6 +602,7 @@ func TestShortcuts(t *testing.T) {
 		"+messages-resources-download",
 		"+messages-search",
 		"+messages-send",
+		"+card-send",
 		"+threads-messages-list",
 		"+flag-create",
 		"+flag-cancel",

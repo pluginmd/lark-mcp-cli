@@ -1,0 +1,10 @@
+{
+  "_comment": "lark-cli-mcp: maintainer skill. Doesn't drive Lark; drives the bridge itself.",
+  "skill": "lark-cli-mcp",
+  "calls": [],
+  "expected_output": [
+    "cmd/mcp/",
+    "tools.go",
+    "MCP"
+  ]
+}

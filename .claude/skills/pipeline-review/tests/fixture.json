@@ -1,0 +1,37 @@
+{
+  "_comment": "pipeline-review: weekly Sales pipeline scan from Base CRM.",
+  "skill": "pipeline-review",
+  "calls": [
+    {
+      "service": "drive",
+      "verb": "search",
+      "flags": [
+        "--doc-types",
+        "--query"
+      ]
+    },
+    {
+      "service": "base",
+      "verb": "data-query",
+      "flags": [
+        "--base-token",
+        "--dsl"
+      ]
+    },
+    {
+      "service": "base",
+      "verb": "record-list",
+      "flags": [
+        "--base-token",
+        "--table-id",
+        "--view-id"
+      ]
+    }
+  ],
+  "expected_output": [
+    "pipeline",
+    "stage",
+    "stuck",
+    "deal"
+  ]
+}

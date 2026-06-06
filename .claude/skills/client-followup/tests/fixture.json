@@ -1,0 +1,51 @@
+{
+  "_comment": "client-followup: dormant CRM contacts — drafts only, NEVER auto-sends.",
+  "skill": "client-followup",
+  "calls": [
+    {
+      "service": "drive",
+      "verb": "search",
+      "flags": [
+        "--doc-types",
+        "--query"
+      ]
+    },
+    {
+      "service": "base",
+      "verb": "record-list",
+      "flags": [
+        "--base-token",
+        "--table-id"
+      ]
+    },
+    {
+      "service": "lark-mail",
+      "verb": "search-participant",
+      "flags": []
+    },
+    {
+      "service": "vc",
+      "verb": "search",
+      "flags": [
+        "--participant-ids",
+        "--start",
+        "--end"
+      ]
+    },
+    {
+      "service": "mail",
+      "verb": "draft-create",
+      "flags": [
+        "--to",
+        "--subject",
+        "--body"
+      ]
+    }
+  ],
+  "expected_output": [
+    "dormant",
+    "Drafts only",
+    "last topic",
+    "NOT sent"
+  ]
+}

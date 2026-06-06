@@ -1,0 +1,33 @@
+{
+  "_comment": "im-digest: triage IM groups via chat-search + chat-messages-list.",
+  "skill": "im-digest",
+  "calls": [
+    {
+      "service": "im",
+      "verb": "chat-search",
+      "flags": [
+        "--sort-by"
+      ]
+    },
+    {
+      "service": "im",
+      "verb": "chat-messages-list",
+      "flags": [
+        "--chat-id",
+        "--start"
+      ]
+    },
+    {
+      "service": "im",
+      "verb": "messages-search",
+      "flags": [
+        "--is-at-me"
+      ]
+    }
+  ],
+  "expected_output": [
+    "CẦN HÀNH ĐỘNG",
+    "CẦN BIẾT",
+    "BỎ QUA"
+  ]
+}

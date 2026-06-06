@@ -1,0 +1,53 @@
+{
+  "_comment": "Fixture for meeting-prep skill. Phase 1 (before) + Phase 2 (after) calls.",
+  "skill": "meeting-prep",
+  "calls": [
+    {
+      "service": "calendar",
+      "verb": "agenda",
+      "flags": [
+        "--start",
+        "--end"
+      ]
+    },
+    {
+      "service": "docs",
+      "verb": "fetch",
+      "flags": [
+        "--api-version",
+        "--doc"
+      ]
+    },
+    {
+      "service": "contact",
+      "verb": "search-user",
+      "flags": [
+        "--query"
+      ]
+    },
+    {
+      "service": "minutes",
+      "verb": "search",
+      "flags": [
+        "--query",
+        "--start"
+      ]
+    },
+    {
+      "service": "task",
+      "verb": "create",
+      "flags": [
+        "--summary",
+        "--assignee",
+        "--due"
+      ]
+    }
+  ],
+  "expected_output": [
+    "Phase 1",
+    "Phase 2",
+    "pre-read",
+    "action items",
+    "key decisions"
+  ]
+}

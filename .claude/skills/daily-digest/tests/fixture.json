@@ -1,0 +1,35 @@
+{
+  "_comment": "daily-digest: end-of-day wrap across calendar + tasks + optional mail.",
+  "skill": "daily-digest",
+  "calls": [
+    {
+      "service": "calendar",
+      "verb": "agenda",
+      "flags": [
+        "--start",
+        "--end"
+      ]
+    },
+    {
+      "service": "task",
+      "verb": "search",
+      "flags": [
+        "--completed",
+        "--due"
+      ]
+    },
+    {
+      "service": "task",
+      "verb": "get-my-tasks",
+      "flags": [
+        "--complete",
+        "--due-end"
+      ]
+    }
+  ],
+  "expected_output": [
+    "End-of-day",
+    "Done today",
+    "Still open"
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "_comment": "sprint-retro: end-of-sprint draft. Tasks + velocity + retro form + IM blocker signals.",
+  "skill": "sprint-retro",
+  "calls": [
+    {
+      "service": "task",
+      "verb": "search",
+      "flags": [
+        "--completed",
+        "--due"
+      ]
+    },
+    {
+      "service": "base",
+      "verb": "record-list",
+      "flags": [
+        "--base-token",
+        "--table-id",
+        "--view-id"
+      ]
+    },
+    {
+      "service": "im",
+      "verb": "messages-search",
+      "flags": [
+        "--query",
+        "--chat-id",
+        "--start"
+      ]
+    }
+  ],
+  "expected_output": [
+    "sprint",
+    "Velocity",
+    "closed",
+    "retro"
+  ]
+}

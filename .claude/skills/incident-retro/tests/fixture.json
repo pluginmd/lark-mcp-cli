@@ -1,0 +1,48 @@
+{
+  "_comment": "incident-retro: blameless postmortem from IM timeline + docs. Outputs structured report.",
+  "skill": "incident-retro",
+  "calls": [
+    {
+      "service": "im",
+      "verb": "messages-search",
+      "flags": [
+        "--query",
+        "--chat-id"
+      ]
+    },
+    {
+      "service": "im",
+      "verb": "chat-messages-list",
+      "flags": [
+        "--chat-id",
+        "--start",
+        "--end"
+      ]
+    },
+    {
+      "service": "docs",
+      "verb": "search",
+      "flags": [
+        "--query"
+      ]
+    },
+    {
+      "service": "task",
+      "verb": "create",
+      "flags": [
+        "--summary",
+        "--assignee",
+        "--due"
+      ]
+    }
+  ],
+  "expected_output": [
+    "incident-retro",
+    "TIMELINE",
+    "ROOT CAUSE",
+    "WHAT WENT WELL",
+    "CONTRIBUTING FACTORS",
+    "ACTION ITEMS",
+    "Blameless"
+  ]
+}

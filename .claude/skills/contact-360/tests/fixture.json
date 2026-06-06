@@ -1,0 +1,68 @@
+{
+  "_comment": "Fixture for contact-360 skill. Asserts the 6-source aggregation calls + report sections.",
+  "skill": "contact-360",
+  "calls": [
+    {
+      "service": "contact",
+      "verb": "search-user",
+      "flags": [
+        "--query"
+      ]
+    },
+    {
+      "service": "contact",
+      "verb": "get-user",
+      "flags": [
+        "--user-id"
+      ]
+    },
+    {
+      "service": "im",
+      "verb": "messages-search",
+      "flags": [
+        "--sender",
+        "--start",
+        "--end"
+      ]
+    },
+    {
+      "service": "vc",
+      "verb": "search",
+      "flags": [
+        "--participant-ids",
+        "--start",
+        "--end"
+      ]
+    },
+    {
+      "service": "docs",
+      "verb": "search",
+      "flags": [
+        "--query"
+      ]
+    },
+    {
+      "service": "task",
+      "verb": "search",
+      "flags": [
+        "--follower"
+      ]
+    },
+    {
+      "service": "base",
+      "verb": "record-search",
+      "flags": [
+        "--base-token",
+        "--table-id",
+        "--json"
+      ]
+    }
+  ],
+  "expected_output": [
+    "👤 CONTACT 360",
+    "📅 LAST INTERACTION",
+    "🔄 RECURRING THEMES",
+    "⏳ OPEN THREADS",
+    "🧠 SUGGESTED OPENERS"
+  ]
+}

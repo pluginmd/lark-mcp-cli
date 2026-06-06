@@ -1,0 +1,37 @@
+{
+  "_comment": "permission-audit: read-only DLP scan. Lists via search verbs (no list verbs in CLI for these surfaces).",
+  "skill": "permission-audit",
+  "calls": [
+    {
+      "service": "drive",
+      "verb": "search",
+      "flags": [
+        "--doc-types",
+        "--folder-tokens"
+      ]
+    },
+    {
+      "service": "base",
+      "verb": "table-list",
+      "flags": [
+        "--base-token"
+      ]
+    },
+    {
+      "service": "docs",
+      "verb": "fetch",
+      "flags": [
+        "--api-version",
+        "--doc"
+      ]
+    }
+  ],
+  "expected_output": [
+    "Read-only scan",
+    "CRIT",
+    "HIGH",
+    "MED",
+    "READ-ONLY",
+    "Mask sensitive data"
+  ]
+}

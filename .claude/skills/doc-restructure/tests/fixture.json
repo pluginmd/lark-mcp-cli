@@ -1,0 +1,18 @@
+{
+  "_comment": "doc-restructure: wiki audit. Listing nodes goes through atomic lark-wiki (raw CLI lacks list verbs).",
+  "skill": "doc-restructure",
+  "calls": [
+    {"service": "lark-wiki", "verb": "space-list", "flags": []},
+    {"service": "lark-wiki", "verb": "node-list", "flags": []},
+    {"service": "docs", "verb": "fetch", "flags": ["--api-version", "--doc"]},
+    {"service": "wiki", "verb": "move", "flags": []}
+  ],
+  "expected_output": [
+    "Read-only audit",
+    "ARCHIVE",
+    "MERGE",
+    "RE-PARENT",
+    "RE-ASSIGN",
+    "Never auto-delete"
+  ]
+}

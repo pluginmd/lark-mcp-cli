@@ -1,0 +1,11 @@
+{
+  "_comment": "overwhelm-triage: meta-router. No Lark calls — just dispatches downstream skill.",
+  "skill": "overwhelm-triage",
+  "calls": [],
+  "expected_output": [
+    "Mail backlog",
+    "IM groups",
+    "Task pile",
+    "Meeting bloat"
+  ]
+}

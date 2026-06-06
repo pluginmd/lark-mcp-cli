@@ -1,0 +1,20 @@
+{
+  "_comment": "deal-update: post-call CRM update via vc + minutes + base. Drafts mail only.",
+  "skill": "deal-update",
+  "calls": [
+    {"service": "vc", "verb": "search", "flags": ["--participant-ids"]},
+    {"service": "minutes", "verb": "search", "flags": ["--query"]},
+    {"service": "lark-minutes", "verb": "summary", "flags": []},
+    {"service": "base", "verb": "record-search", "flags": ["--base-token", "--table-id", "--json"]},
+    {"service": "base", "verb": "record-batch-update", "flags": []},
+    {"service": "lark-mail", "verb": "draft-create", "flags": []}
+  ],
+  "expected_output": [
+    "deal-update",
+    "pain",
+    "budget",
+    "timeline",
+    "next",
+    "NEVER auto-send"
+  ]
+}

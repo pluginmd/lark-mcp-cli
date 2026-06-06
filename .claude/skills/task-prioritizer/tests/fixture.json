@@ -1,0 +1,39 @@
+{
+  "_comment": "task-prioritizer: weighted scoring. Task + OKR + IM blocker signals.",
+  "skill": "task-prioritizer",
+  "calls": [
+    {
+      "service": "task",
+      "verb": "get-my-tasks",
+      "flags": [
+        "--complete"
+      ]
+    },
+    {
+      "service": "task",
+      "verb": "get-related-tasks",
+      "flags": [
+        "--followed-by-me"
+      ]
+    },
+    {
+      "service": "okr",
+      "verb": "progress-get",
+      "flags": []
+    },
+    {
+      "service": "im",
+      "verb": "messages-search",
+      "flags": [
+        "--query"
+      ]
+    }
+  ],
+  "expected_output": [
+    "task-prioritizer",
+    "top 5",
+    "Blocking",
+    "Deadline",
+    "Score each task"
+  ]
+}

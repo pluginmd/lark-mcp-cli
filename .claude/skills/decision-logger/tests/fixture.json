@@ -1,0 +1,48 @@
+{
+  "_comment": "decision-logger: detect chốt/decided/approved keywords; promote to Base. Two modes: explicit + sweep.",
+  "skill": "decision-logger",
+  "calls": [
+    {
+      "service": "im",
+      "verb": "messages-search",
+      "flags": [
+        "--query"
+      ]
+    },
+    {
+      "service": "im",
+      "verb": "threads-messages-list",
+      "flags": [
+        "--thread"
+      ]
+    },
+    {
+      "service": "vc",
+      "verb": "search",
+      "flags": [
+        "--start",
+        "--end"
+      ]
+    },
+    {
+      "service": "lark-minutes",
+      "verb": "summary",
+      "flags": []
+    },
+    {
+      "service": "base",
+      "verb": "record-batch-create",
+      "flags": [
+        "--base-token",
+        "--table-id",
+        "--json"
+      ]
+    }
+  ],
+  "expected_output": [
+    "decisions",
+    "Decided by",
+    "Stakeholders",
+    "Source"
+  ]
+}

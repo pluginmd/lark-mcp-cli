@@ -1,0 +1,30 @@
+{
+  "_comment": "doc-from-template: render template + write to docs/wiki/sheets.",
+  "skill": "doc-from-template",
+  "calls": [
+    {
+      "service": "docs",
+      "verb": "create",
+      "flags": [
+        "--api-version",
+        "--title",
+        "--markdown"
+      ]
+    },
+    {
+      "service": "wiki",
+      "verb": "node-create",
+      "flags": []
+    },
+    {
+      "service": "sheets",
+      "verb": "append",
+      "flags": []
+    }
+  ],
+  "expected_output": [
+    "Confirm before write",
+    "DocxXML",
+    "api-version v2"
+  ]
+}

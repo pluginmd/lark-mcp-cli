@@ -1,0 +1,27 @@
+{
+  "_comment_1": "Two variants below — pick ONE based on how OpenClaw runs. Merge under mcp.servers in ~/.openclaw/openclaw.json, OR use: openclaw mcp set lark-cli '<entry as JSON>'",
+  "_comment_2": "VARIANT A — OpenClaw runs ON THE HOST (same machine as lark-cli). Use stdio for least moving parts.",
+  "_comment_3": "VARIANT B — OpenClaw runs IN DOCKER and lark-cli is on the host. Use HTTP. Run on host: `lark-cli mcp serve --transport http --addr 127.0.0.1:3000`. Container reaches host via host.docker.internal.",
+
+  "mcp": {
+    "servers": {
+      "lark-cli-stdio": {
+        "_use_when": "VARIANT A — OpenClaw runs on the same machine as the lark-cli binary.",
+        "command": "<BINARY-PATH>",
+        "args": ["mcp", "serve"],
+        "env": {
+          "HOME": "<USER-HOME>",
+          "NO_COLOR": "1"
+        }
+      },
+
+      "lark-cli-http": {
+        "_use_when": "VARIANT B — OpenClaw runs in Docker; lark-cli is installed on the macOS/Linux host outside the container.",
+        "_host_command": "lark-cli mcp serve --transport http --addr 127.0.0.1:3000",
+        "url": "http://host.docker.internal:3000",
+        "transport": "streamable-http",
+        "connectionTimeoutMs": 10000
+      }
+    }
+  }
+}

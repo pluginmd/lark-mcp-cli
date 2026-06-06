@@ -1,0 +1,13 @@
+{
+  "_comment": "focus-mode: block calendar + IM. DND not exposed via CLI — UI only.",
+  "skill": "focus-mode",
+  "calls": [
+    {"service": "calendar", "verb": "create", "flags": ["--summary", "--start", "--end"]},
+    {"service": "im", "verb": "messages-send", "flags": ["--chat-id", "--text"]}
+  ],
+  "expected_output": [
+    "Focus mode",
+    "DND",
+    "block calendar"
+  ]
+}
